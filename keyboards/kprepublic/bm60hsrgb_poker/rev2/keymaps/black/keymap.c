@@ -16,43 +16,43 @@
 
 #include QMK_KEYBOARD_H
 
+#ifdef RGB_MATRIX_ENABLE
 #include "eeprom.h"
+#endif /* RGB_MATRIX_ENABLE */
 
-#define LT_SPC LT(LY_NAV, KC_SPC)
-#define MO_CTRL MO(LY_CTRL)
-
-#define LCTL_SPC C(KC_SPC)
+#define LT_SPC LT(LAYER_NAVI, KC_SPC)
+#define MO_QANT MO(LAYER_QANT)
 
 enum {
     QU_RAND = SAFE_RANGE
 };
 
 enum {
-    LY_BASE = 0,
-    LY_NAV,
-    LY_CTRL,
+    LAYER_BASE = 0,
+    LAYER_NAVI,
+    LAYER_QANT,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [LY_BASE] = LAYOUT_60_ansi(
+    [LAYER_BASE] = LAYOUT_60_ansi(
         QK_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
         KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT ,
         SC_LSPO, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,                   SC_RSPC,
-        KC_LCTL, KC_LALT, KC_LGUI,                            LT_SPC,                             KC_RGUI, MO_CTRL, KC_RALT, KC_RCTL
+        KC_LCTL, KC_LALT, KC_LGUI,                            LT_SPC,                             KC_RGUI, MO_QANT, KC_RALT, KC_RCTL
     ),
-    [LY_NAV] = LAYOUT_60_ansi(
+    [LAYER_NAVI] = LAYOUT_60_ansi(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,          _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, _______
     ),
-    [LY_CTRL] = LAYOUT_60_ansi(
-        QK_BOOT, EE_CLR , QK_RBT , _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, QU_RAND,
+    [LAYER_QANT] = LAYOUT_60_ansi(
+        QK_BOOT, EE_CLR , QK_RBT , _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, QK_BOOT,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          EE_CLR ,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   QK_RBT ,
         _______, _______, _______,                            _______,                            _______, _______, _______, _______
     ),
 };
@@ -83,12 +83,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_user(void) {
     switch (get_highest_layer(layer_state | default_layer_state)) {
-        case LY_NAV:
+        case LAYER_NAVI:
             for (uint8_t i = 34; i <= 37; i++) {
                 rgb_matrix_set_color(i, RGB_GREEN);
             }
             break;
-        case LY_CTRL:
+        case LAYER_QANT:
             rgb_matrix_set_color_all(RGB_MAGENTA);
             break;
     }
@@ -104,7 +104,7 @@ bool rgb_matrix_indicators_user(void) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
-        case LY_BASE:
+        case LAYER_BASE:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_TYPING_HEATMAP);
             break;
     }
