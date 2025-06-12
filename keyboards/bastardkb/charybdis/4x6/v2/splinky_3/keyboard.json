@@ -8,7 +8,7 @@
         "mousekey": false,
         "extrakey": true,
         "rgb_matrix": true,
-        "pointing_device": true
+        "pointing_device": false
     },
     "rgb_matrix": {
         "driver": "ws2812"
