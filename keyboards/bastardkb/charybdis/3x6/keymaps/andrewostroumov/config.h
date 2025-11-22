@@ -16,6 +16,9 @@
  */
 #pragma once
 
+// Configuring QMK
+// https://docs.qmk.fm/config_options
+
 #define NO_ACTION_ONESHOT
 #define RETRO_TAPPING
 
