@@ -19,15 +19,12 @@
 // Configuring QMK
 // https://docs.qmk.fm/config_options
 
-#define NO_ACTION_ONESHOT
-#define RETRO_TAPPING
-
 #define TAPPING_TERM 200
-#define QUICK_TAP_TERM 0
+#define QUICK_TAP_TERM 120
 
 #ifdef RGB_MATRIX_ENABLE
 #    undef RGB_MATRIX_MAXIMUM_BRIGHTNESS
-#    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150
+#    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 100
 #    undef RGB_MATRIX_DEFAULT_MODE
 #    define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_RAINBOW_BEACON
 #endif

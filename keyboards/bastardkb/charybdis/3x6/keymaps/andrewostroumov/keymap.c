@@ -26,6 +26,7 @@ enum charybdis_keymap_layers {
     LAYER_SPECIAL,
     LAYER_CONTROL,
     LAYER_NUMERIC,
+    LAYER_QUANTUM,
     LAYER_POINTER,
 };
 
@@ -41,17 +42,13 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-#define LT_W LT(LAYER_POINTER, KC_W)
-#define LT_G LT(LAYER_NUMERIC, KC_G)
-#define LT_D LT(LAYER_CONTROL, KC_D)
-#define LT_R LT(LAYER_SPECIAL, KC_R)
+#define LT_QNT1 LT(LAYER_QUANTUM, KC_Q)
+#define LT_QNT2 LT(LAYER_QUANTUM, KC_P)
+#define LT_CTR1 LT(LAYER_CONTROL, KC_D)
+#define LT_NUM1 LT(LAYER_NUMERIC, KC_F)
+#define LT_SPL1 LT(LAYER_SPECIAL, KC_SPC)
 
-#define LT_O LT(LAYER_POINTER, KC_O)
-#define LT_H LT(LAYER_NUMERIC, KC_H)
-#define LT_K LT(LAYER_CONTROL, KC_K)
-#define LT_U LT(LAYER_SPECIAL, KC_U)
-
-#define MC_LOCK LCTL(LGUI(KC_Q))
+#define QU_LOCK LCTL(LGUI(KC_Q))
 
 #define NV_PTAB LSFT(LGUI(KC_LBRC))
 #define NV_NTAB LSFT(LGUI(KC_RBRC))
@@ -86,13 +83,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_DEFAULT] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       _______, _______,    LT_W, _______,    LT_R, _______,    _______,    LT_U, _______,    LT_O, _______, _______,
+       _______, LT_QNT1, _______, _______, _______, _______,    _______, _______, _______, _______, LT_QNT2, _______,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, _______, _______,    LT_D, _______,    LT_G,       LT_H, _______,    LT_K, _______, _______, _______,
+       _______, _______, _______, LT_CTR1, LT_NUM1, _______,    _______, _______, _______, _______, _______, _______,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  _______, _______, _______,    _______, _______
+                                  _______, LT_SPL1, _______,    _______, _______
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -102,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        _______, KC_UNDS, KC_SCLN, KC_LBRC, KC_RBRC, KC_LABK,    KC_LCBR, KC_LPRN, KC_RPRN, KC_COLN,  KC_EQL, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, KC_EXLM, KC_PIPE, KC_MINS, KC_PLUS, KC_RABK,    KC_RCBR, KC_ASTR, KC_CIRC, KC_AMPR, KC_QUES, _______,
+       _______, KC_EXLM, KC_PIPE, KC_MINS, KC_PLUS, KC_RABK,    KC_RCBR, KC_ASTR, KC_CIRC, KC_AMPR, KC_QUES, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   _______, _______, _______,    _______, _______
   //                            ╰───────────────────────────╯ ╰──────────────────╯
@@ -110,11 +107,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_CONTROL] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, NV_PTAB, NV_NTAB, XXXXXXX, KC_MPRV, KC_MUTE,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, NV_PTAB, NV_NTAB, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_MPLY, KC_VOLD,
+       _______, KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, KC_LCTL, KC_LALT, XXXXXXX,  KC_TAB, XXXXXXX,    XXXXXXX, NV_BACK, NV_FRWD, XXXXXXX, KC_MNXT, KC_VOLU,
+       _______, KC_LCTL, KC_LALT, XXXXXXX,  KC_TAB, XXXXXXX,    XXXXXXX, NV_BACK, NV_FRWD, XXXXXXX, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   _______, _______, _______,    _______, _______
   //                            ╰───────────────────────────╯ ╰──────────────────╯
@@ -122,9 +119,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_NUMERIC] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_CPYP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P1,   KC_P2,   KC_P3, XXXXXXX, KC_CAPP,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P1,   KC_P2,   KC_P3, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_CPYW, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P4,   KC_P5,   KC_P6, XXXXXXX, KC_CAPW,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P4,   KC_P5,   KC_P6, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P7,   KC_P8,   KC_P9, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -132,11 +129,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
+  [LAYER_QUANTUM] = LAYOUT(
+  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+       QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, XXXXXXX, QK_BOOT,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+        EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MUTE, KC_VOLD, KC_VOLU, KC_CAPP, XXXXXXX,  EE_CLR,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, XXXXXXX, XXXXXXX,
+  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+                                  KC_MCTL, KC_LPAD, QU_LOCK,    XXXXXXX, XXXXXXX
+  //                            ╰───────────────────────────╯ ╰──────────────────╯
+),
+
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-        EE_CLR, XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, XXXXXXX,    XXXXXXX, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX,  EE_CLR,
+       XXXXXXX, XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, XXXXXXX,    XXXXXXX, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -186,23 +195,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 void rgb_matrix_update_pwm_buffers(void);
 #endif
 
-bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LT_W:
-        case LT_G:
-        case LT_D:
-        case LT_R:
-            return true;
-        case LT_O:
-        case LT_H:
-        case LT_K:
-        case LT_U:
-            return true;
-        default:
-            return false;
-    }
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_SNIPING_ON_LAYER
@@ -216,9 +208,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
             break;
         case LAYER_SPECIAL:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_HUE_BREATHING);
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
+            rgb_matrix_sethsv_noeeprom(HSV_GOLD);
             break;
-        case LAYER_POINTER:
+        case LAYER_QUANTUM:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
             rgb_matrix_sethsv_noeeprom(HSV_GREEN);
             break;
