@@ -16,11 +16,11 @@
  */
 #pragma once
 
-#define NO_ACTION_ONESHOT
-#define RETRO_TAPPING
+// Configuring QMK
+// https://docs.qmk.fm/config_options
 
 #define TAPPING_TERM 200
-#define QUICK_TAP_TERM 0
+#define QUICK_TAP_TERM 120
 
 #ifdef RGB_MATRIX_ENABLE
 #    undef RGB_MATRIX_MAXIMUM_BRIGHTNESS
