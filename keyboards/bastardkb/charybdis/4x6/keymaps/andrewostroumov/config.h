@@ -19,6 +19,7 @@
 // Configuring QMK
 // https://docs.qmk.fm/config_options
 
+#define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM 200
 #define QUICK_TAP_TERM 120
 
