@@ -109,8 +109,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  _______, _______, _______,    _______, _______,
-                                           MO_SPL1, MO_QNT1,    _______
+                                  _______, LT_SPL1, _______,    _______, _______,
+                                           _______, MO_QNT1,    _______
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -238,6 +238,16 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM;
     }
 }
+
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT_SPL1:
+            return true;
+        default:
+            return false;
+    }
+}
+
 void on_lang_finished(tap_dance_state_t *state, void *user_data) {
     register_code16(KC_LCTL);
     tap_code16(KC_SPC);

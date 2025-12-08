@@ -19,9 +19,11 @@
 // Configuring QMK
 // https://docs.qmk.fm/config_options
 
-#define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM 200
 #define QUICK_TAP_TERM 120
+
+#define TAPPING_TERM_PER_KEY
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
 #ifdef RGB_MATRIX_ENABLE
 #    undef RGB_MATRIX_MAXIMUM_BRIGHTNESS
