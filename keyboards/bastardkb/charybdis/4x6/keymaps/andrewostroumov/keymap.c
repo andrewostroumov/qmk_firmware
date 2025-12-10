@@ -162,11 +162,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-        EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, XXXXXXX,  EE_CLR,
+        EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, DM_RSTP,  EE_CLR,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MUTE, KC_VOLD, KC_VOLU, KC_CAPP, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MUTE, KC_VOLD, KC_VOLU, KC_CAPP, DM_REC1, DM_REC2,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, DM_PLY1, DM_PLY2,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_MCTL, KC_LPAD, QU_LOCK,    XXXXXXX, XXXXXXX,
                                            XXXXXXX, XXXXXXX,    XXXXXXX
@@ -248,6 +248,22 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // When Ctrl is held, prevent layer activation on Space and allow normal Space behavior
+    if (keycode == LT_SPL1) {
+        if (get_mods() & MOD_MASK_CTRL) {
+            if (record->event.pressed) {
+                // Send regular Space instead of layer-tap when Ctrl is held
+                register_code(KC_SPC);
+            } else {
+                unregister_code(KC_SPC);
+            }
+            return false; // Skip default handling
+        }
+    }
+    return true; // Continue with default handling
+}
+
 void on_lang_finished(tap_dance_state_t *state, void *user_data) {
     register_code16(KC_LCTL);
     tap_code16(KC_SPC);
@@ -306,6 +322,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 }
 
 void keyboard_post_init_user(void) {
-    layer_state_set(default_layer_state << LAYER_DEFAULT);
+    default_layer_set(default_layer_state << LAYER_DEFAULT);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
 }
