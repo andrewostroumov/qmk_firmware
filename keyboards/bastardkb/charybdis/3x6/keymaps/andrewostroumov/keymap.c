@@ -27,6 +27,7 @@ enum charybdis_keymap_layers {
     LAYER_CONTROL,
     LAYER_NUMERIC,
     LAYER_QUANTUM,
+	LAYER_DOTA,
     LAYER_POINTER,
 };
 
@@ -47,6 +48,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LT_CTR1 LT(LAYER_CONTROL, KC_D)
 #define LT_NUM1 LT(LAYER_NUMERIC, KC_F)
 #define LT_SPL1 LT(LAYER_SPECIAL, KC_SPC)
+#define TG_DOTA TG(LAYER_DOTA)
 
 #define QU_LOCK LCTL(LGUI(KC_Q))
 
@@ -137,9 +139,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  KC_MCTL, KC_LPAD, QU_LOCK,    XXXXXXX, XXXXXXX
+                                  KC_MCTL, KC_LPAD, QU_LOCK,    TG_DOTA, XXXXXXX
   //                            ╰───────────────────────────╯ ╰──────────────────╯
-),
+  ),
+
+  [LAYER_DOTA] = LAYOUT(
+  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+       QK_GESC,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_LBRC,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       KC_LSFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RCTL,
+  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+                                    KC_F1,   KC_F2, KC_LALT,    TG_DOTA,  XXXXXXX
+  //                            ╰───────────────────────────╯ ╰──────────────────╯
+  ),
 
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
@@ -214,6 +228,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case LAYER_QUANTUM:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
             rgb_matrix_sethsv_noeeprom(HSV_GREEN);
+            break;
+        case LAYER_DOTA:
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
+            rgb_matrix_sethsv_noeeprom(HSV_RED);
             break;
     }
 
