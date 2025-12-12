@@ -20,7 +20,12 @@
 // https://docs.qmk.fm/config_options
 
 #define TAPPING_TERM 200
-#define QUICK_TAP_TERM 120
+#define QUICK_TAP_TERM 100
+
+#define TAPPING_TERM_PER_KEY
+#define RETRO_TAPPING_PER_KEY
+
+#define DYNAMIC_MACRO_KEEP_ORIGINAL_LAYER_STATE
 
 #ifdef RGB_MATRIX_ENABLE
 #    undef RGB_MATRIX_MAXIMUM_BRIGHTNESS

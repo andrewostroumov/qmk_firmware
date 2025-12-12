@@ -30,10 +30,6 @@ enum charybdis_keymap_layers {
     LAYER_POINTER,
 };
 
-enum charybdis_keymap_shorts {
-    SHORT_LANG,
-};
-
 #ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 static uint16_t auto_pointer_layer_timer = 0;
 
@@ -52,11 +48,10 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LT_NUM1 LT(LAYER_NUMERIC, KC_F)
 #define LT_SPL1 LT(LAYER_SPECIAL, KC_SPC)
 
-#define MO_QNT1 MO(LAYER_QUANTUM)
 #define MO_SPL1 MO(LAYER_SPECIAL)
+#define MO_QNT1 MO(LAYER_QUANTUM)
 
 #define QU_LOCK LCTL(LGUI(KC_Q))
-#define TD_LANG TD(SHORT_LANG)
 
 #define NV_PTAB LSFT(LGUI(KC_LBRC))
 #define NV_NTAB LSFT(LGUI(KC_RBRC))
@@ -74,13 +69,6 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    define S_D_MOD KC_NO
 #    define SNIPING KC_NO
 #endif // !POINTING_DEVICE_ENABLE
-
-void on_lang_finished(tap_dance_state_t *state, void *user_data);
-void on_lang_reset(tap_dance_state_t *state, void *user_data);
-
-tap_dance_action_t tap_dance_actions[] = {
-    [SHORT_LANG] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, on_lang_finished, on_lang_reset),
-};
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -103,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
+       _______, LT_QNT1, _______, _______, _______, _______,    _______, _______, _______, _______, LT_QNT2, _______,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        _______, _______, _______, LT_CTR1, LT_NUM1, _______,    _______, _______, _______, _______, _______, _______,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
@@ -135,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, NV_PTAB, NV_NTAB, XXXXXXX, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, XXXXXXX, XXXXXXX,
+       _______, KC_LSFT, XXXXXXX, XXXXXXX, KC_CAPS, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        _______, KC_LCTL, KC_LALT, XXXXXXX,  KC_TAB, XXXXXXX,    XXXXXXX, NV_BACK, NV_FRWD, XXXXXXX, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -158,6 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                            _______, _______,    _______
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
+
   [LAYER_QUANTUM] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
@@ -239,7 +228,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT_SPL1:
             return true;
@@ -247,32 +236,6 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
 }
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // When Ctrl is held, prevent layer activation on Space and allow normal Space behavior
-    if (keycode == LT_SPL1) {
-        if (get_mods() & MOD_MASK_CTRL) {
-            if (record->event.pressed) {
-                // Send regular Space instead of layer-tap when Ctrl is held
-                register_code(KC_SPC);
-            } else {
-                unregister_code(KC_SPC);
-            }
-            return false; // Skip default handling
-        }
-    }
-    return true; // Continue with default handling
-}
-
-void on_lang_finished(tap_dance_state_t *state, void *user_data) {
-    register_code16(KC_LCTL);
-    tap_code16(KC_SPC);
-}
-
-void on_lang_reset(tap_dance_state_t *state, void *user_data) {
-    unregister_code16(KC_LCTL);
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_SNIPING_ON_LAYER

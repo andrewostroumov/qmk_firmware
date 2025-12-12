@@ -48,6 +48,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LT_CTR1 LT(LAYER_CONTROL, KC_D)
 #define LT_NUM1 LT(LAYER_NUMERIC, KC_F)
 #define LT_SPL1 LT(LAYER_SPECIAL, KC_SPC)
+
 #define TG_DOTA TG(LAYER_DOTA)
 
 #define QU_LOCK LCTL(LGUI(KC_Q))
@@ -133,11 +134,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_QUANTUM] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, XXXXXXX, QK_BOOT,
+       QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, DM_RSTP, QK_BOOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-        EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MUTE, KC_VOLD, KC_VOLU, KC_CAPP, XXXXXXX,  EE_CLR,
+        EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MUTE, KC_VOLD, KC_VOLU, KC_CAPP, DM_REC1,  EE_CLR,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, DM_PLY1, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_MCTL, KC_LPAD, QU_LOCK,    TG_DOTA, XXXXXXX
   //                            ╰───────────────────────────╯ ╰──────────────────╯
@@ -209,6 +210,23 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 void rgb_matrix_update_pwm_buffers(void);
 #endif
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT_SPL1:
+            return TAPPING_TERM + 100;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT_SPL1:
+            return true;
+        default:
+            return false;
+    }
+}
 layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_SNIPING_ON_LAYER
@@ -262,6 +280,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 }
 
 void keyboard_post_init_user(void) {
-    layer_state_set(default_layer_state << LAYER_DEFAULT);
+    default_layer_set(default_layer_state << LAYER_DEFAULT);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
 }
