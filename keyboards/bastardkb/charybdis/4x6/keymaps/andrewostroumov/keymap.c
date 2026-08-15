@@ -27,6 +27,7 @@ enum charybdis_keymap_layers {
     LAYER_CONTROL,
     LAYER_NUMERIC,
     LAYER_QUANTUM,
+	LAYER_GAME,
     LAYER_POINTER,
 };
 
@@ -48,6 +49,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LT_NUM1 LT(LAYER_NUMERIC, KC_F)
 #define LT_SPL1 LT(LAYER_SPECIAL, KC_SPC)
 
+#define TG_GAME TG(LAYER_GAME)
 #define MO_SPL1 MO(LAYER_SPECIAL)
 #define MO_QNT1 MO(LAYER_QUANTUM)
 
@@ -158,9 +160,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, DM_PLY1, DM_PLY2,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_MCTL, KC_LPAD, QU_LOCK,    XXXXXXX, XXXXXXX,
-                                           XXXXXXX, XXXXXXX,    XXXXXXX
+                                           XXXXXXX, XXXXXXX,    TG_GAME
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
+  [LAYER_GAME] = LAYOUT(
+    // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+         QK_GESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,
+    // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+          KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_LBRC,
+    // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+         KC_LSFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+    // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+         KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RCTL,
+    // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+                                    KC_LGUI,  KC_SPC, KC_LALT,    KC_BSPC,  KC_ENT,
+                                              KC_F1,    KC_F2,    TG_GAME
+    //                            ╰───────────────────────────╯ ╰──────────────────╯
+    ),
 
   [LAYER_POINTER] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
@@ -229,6 +245,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
         case LAYER_BASE:
         case LAYER_DEFAULT:
+			rgb_matrix_enable_noeeprom();
             rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
             break;
         case LAYER_SPECIAL:
@@ -238,6 +255,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case LAYER_QUANTUM:
             rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
             rgb_matrix_sethsv_noeeprom(HSV_GREEN);
+            break;
+        case LAYER_GAME:
+			rgb_matrix_disable_noeeprom();
             break;
     }
 

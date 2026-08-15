@@ -98,11 +98,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LAYER_SPECIAL] = LAYOUT(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       _______, KC_TILD,   KC_AT, KC_PERC, KC_QUOT, KC_SLSH,    KC_BSLS, KC_DQUO,  KC_DLR, KC_HASH,  KC_GRV, XXXXXXX,
+       _______, KC_TILD,   KC_AT, KC_PERC, KC_DLR, KC_SLSH,    KC_BSLS, KC_QUOT,  KC_DQUO, KC_HASH,  KC_GRV, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, KC_UNDS, KC_SCLN, KC_LBRC, KC_RBRC, KC_LABK,    KC_LCBR, KC_LPRN, KC_RPRN, KC_COLN,  KC_EQL, XXXXXXX,
+       _______, KC_UNDS, KC_SCLN, KC_LBRC, KC_RBRC, KC_CIRC,    KC_LCBR, KC_LPRN, KC_RPRN, KC_COLN,  KC_EQL, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       _______, KC_EXLM, KC_PIPE, KC_MINS, KC_PLUS, KC_RABK,    KC_RCBR, KC_ASTR, KC_CIRC, KC_AMPR, KC_QUES, XXXXXXX,
+       _______, KC_EXLM, KC_PIPE, KC_MINS, KC_PLUS, KC_ASTR,    KC_RCBR, KC_LABK, KC_RABK, KC_AMPR, KC_QUES, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   _______, _______, _______,    _______, _______
   //                            ╰───────────────────────────╯ ╰──────────────────╯
@@ -126,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P4,   KC_P5,   KC_P6, XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     KC_DOT,   KC_P7,   KC_P8,   KC_P9, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_DOT,   KC_P7,   KC_P8,   KC_P9, XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   _______, _______, _______,    _______,   KC_P0
   //                            ╰───────────────────────────╯ ╰──────────────────╯
