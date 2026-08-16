@@ -22,6 +22,7 @@
 
 enum charybdis_keymap_layers {
     LAYER_BASE = 0,
+    LAYER_WINDOWS,
     LAYER_DEFAULT,
     LAYER_SPECIAL,
     LAYER_CONTROL,
@@ -50,6 +51,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LT_SPL1 LT(LAYER_SPECIAL, KC_SPC)
 
 #define TG_GAME TG(LAYER_GAME)
+#define TG_WIN TG(LAYER_WINDOWS)
 #define MO_SPL1 MO(LAYER_SPECIAL)
 #define MO_QNT1 MO(LAYER_QUANTUM)
 
@@ -86,6 +88,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LGUI,  KC_SPC, KC_LALT,    KC_BSPC,  KC_ENT,
                                            XXXXXXX, XXXXXXX,    XXXXXXX
+  //                            ╰───────────────────────────╯ ╰──────────────────╯
+  ),
+  [LAYER_WINDOWS] = LAYOUT(
+  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+       _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       KC_LGUI, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
+  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+                                  KC_LCTL, _______, _______,    _______, _______,
+                                           _______, _______,    _______
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -138,11 +154,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
         KC_F12,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P1,   KC_P2,   KC_P3, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_1,    KC_2,    KC_3,  XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_P4,   KC_P5,   KC_P6, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,   KC_4,    KC_5,    KC_6,  XXXXXXX, XXXXXXX,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     KC_DOT,   KC_P7,   KC_P8,   KC_P9, XXXXXXX, XXXXXXX,
+       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     KC_DOT,   KC_7,    KC_8,    KC_9,  XXXXXXX, XXXXXXX,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   _______, _______, _______,    _______,   KC_P0,
                                            _______, _______,    _______
@@ -160,7 +176,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_MPLY, KC_MPRV, KC_MNXT, KC_CAPW, DM_PLY1, DM_PLY2,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_MCTL, KC_LPAD, QU_LOCK,    XXXXXXX, XXXXXXX,
-                                           XXXXXXX, XXXXXXX,    TG_GAME
+                                           XXXXXXX,  TG_WIN,    TG_GAME
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
   [LAYER_GAME] = LAYOUT(
@@ -230,6 +246,22 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    endif // CHARYBDIS_AUTO_SNIPING_ON_LAYER
 #endif     // POINTING_DEVICE_ENABLE
 
+bool process_detected_host_os_user(os_variant_t detected_os) {
+    switch (detected_os) {
+        case OS_WINDOWS:
+            layer_on(LAYER_WINDOWS);
+            break;
+        case OS_MACOS:
+        case OS_IOS:
+            layer_off(LAYER_WINDOWS);
+            break;
+        default:
+            break;
+    }
+
+    return true;
+}
+
 #ifdef RGB_MATRIX_ENABLE
 // Forward-declare this helper function since it is defined in rgb_matrix.c.
 void rgb_matrix_update_pwm_buffers(void);
@@ -244,6 +276,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     switch (get_highest_layer(state)) {
         case LAYER_BASE:
+        case LAYER_WINDOWS:
         case LAYER_DEFAULT:
 			rgb_matrix_enable_noeeprom();
             rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
